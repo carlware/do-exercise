@@ -4,9 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"geoextractor-go/extractor"
-	"github.com/dsoprea/go-exif/v3"
-	exifcommon "github.com/dsoprea/go-exif/v3/common"
-	"io/ioutil"
+	"geoextractor-go/extractor/processors"
+	"geoextractor-go/extractor/writers"
 	"log"
 	"os"
 )
@@ -34,80 +33,21 @@ func main() {
 		log.Fatalf("error while extracting %s", err)
 	}
 
-	writer, err := extractor.NewCsvWriter(output)
+	writer, err := writers.NewCsvWriter(output)
 	defer writer.Flush()
 	if err != nil {
-		fmt.Printf("err %s\n", err)
+		log.Fatalf("error while creting output file %s", err)
 	}
 
-	processor := extractor.Processor(exifImagesData)
+	processor := extractor.NewTagProcessor(exifImagesData)
 
 	err = processor.
-		AddField("filename", func(info extractor.ImageInfo) string {
-			return info.Filename
-		}).
-		AddField("latitude", func(info extractor.ImageInfo) string {
-			ifdTag, _ := info.IfdIndex.RootIfd.ChildWithIfdPath(exifcommon.IfdGpsInfoStandardIfdIdentity)
-			gpsInfo, _ := ifdTag.GpsInfo()
-			if gpsInfo.Latitude.Decimal() == 0 {
-				return "N/A"
-			}
-			return fmt.Sprintf("%f", gpsInfo.Latitude.Decimal())
-		}).
-		AddField("longitude", func(info extractor.ImageInfo) string {
-			ifdTag, _ := info.IfdIndex.RootIfd.ChildWithIfdPath(exifcommon.IfdGpsInfoStandardIfdIdentity)
-			gpsInfo, _ := ifdTag.GpsInfo()
-			if gpsInfo.Longitude.Decimal() == 0 {
-				return "N/A"
-			}
-			return fmt.Sprintf("%f", gpsInfo.Longitude.Decimal())
-		}).
+		AddTagHandler("filename", processors.GetFileName).
+		AddTagHandler("latitude", processors.GetLatitude).
+		AddTagHandler("longitude", processors.GetLongitude).
 		Write(writer)
 	if err != nil {
-		fmt.Printf("error write %s\n", err)
+		log.Fatalf("error while creting output file %s", err)
 	}
 
-}
-
-func main1() {
-	filename := "./images/more_images/wax-card.jpg"
-
-	imageBytes, err := ioutil.ReadFile(filename)
-	if err != nil {
-		fmt.Println("err", err)
-	}
-
-	exifRaw, err := exif.SearchAndExtractExif(imageBytes)
-	if err != nil {
-		fmt.Printf("No EXIF data.\n")
-		os.Exit(1)
-	}
-
-	//fmt.Println("raw", string(exifRaw))
-
-	entries, _, err := exif.GetFlatExifDataUniversalSearch(exifRaw, nil, true)
-	if err != nil {
-		fmt.Println("err", err)
-		os.Exit(1)
-	}
-
-	for _, entry := range entries {
-		//if strings.HasPrefix(entry.TagName, "GPS") {
-		fmt.Printf("entry %+v\n", entry)
-		//fmt.Printf("entry: name=%s  value=%+v T=%T \n", entry.TagName, entry.Value, entry.Value)
-		//}
-	}
-
-	im, err := exifcommon.NewIfdMappingWithStandard()
-	ti := exif.NewTagIndex()
-
-	_, index, err := exif.Collect(im, ti, exifRaw)
-
-	for _, leaf := range index.Tree {
-		fmt.Printf("leaft %+v\n", leaf)
-	}
-
-	ifdTag, err := index.RootIfd.ChildWithIfdPath(exifcommon.IfdGpsInfoStandardIfdIdentity)
-	gpsInfo, err := ifdTag.GpsInfo()
-	fmt.Printf("index %+v %+v\n", gpsInfo.Latitude.Decimal(), gpsInfo.Longitude.Decimal())
 }
