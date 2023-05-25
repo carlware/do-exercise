@@ -2,23 +2,17 @@ package writers
 
 import (
 	"encoding/csv"
-	"os"
+	"io"
 )
 
 type CsvWriter struct {
 	csvWriter *csv.Writer
-	file *os.File
 }
 
-func NewCsvWriter(filename string) (*CsvWriter, error) {
-	f, err := os.Create(filename)
-	if err != nil {
-		return nil, err
-	}
+func NewCsvWriter(writer io.Writer) *CsvWriter {
 	return &CsvWriter{
-		csvWriter: csv.NewWriter(f),
-		file: f,
-	}, nil
+		csvWriter: csv.NewWriter(writer),
+	}
 }
 
 func (w *CsvWriter) Write(record []string) error {
@@ -27,5 +21,4 @@ func (w *CsvWriter) Write(record []string) error {
 
 func (w *CsvWriter) Flush() {
 	w.csvWriter.Flush()
-	w.file.Close()
 }

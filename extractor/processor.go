@@ -44,6 +44,7 @@ func (w TagProcessor) Write(writer RecordWriter) error {
 			return fmt.Errorf("error while writing %w", err)
 		}
 	}
+	writer.Flush()
 
 	return nil
 }

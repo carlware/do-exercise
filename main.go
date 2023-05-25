@@ -4,26 +4,25 @@ import (
 	"flag"
 	"fmt"
 	"geoextractor-go/extractor"
-	"geoextractor-go/extractor/processors"
 	"geoextractor-go/extractor/writers"
 	"log"
 	"os"
 )
 
 func main() {
-	var input string
-	var output string
+	var inputName string
+	var outputName string
 
-	flag.StringVar(&input, "input", "", "image filepath or directory")
-	flag.StringVar(&output, "output", "output.csv", "filename of output")
+	flag.StringVar(&inputName, "input", "", "image filepath or directory")
+	flag.StringVar(&outputName, "output", "output.csv", "filename of output")
 	flag.Parse()
 
-	if input == "" {
+	if inputName == "" {
 		fmt.Println("missing --input argument")
 		os.Exit(0)
 	}
 
-	files, err := extractor.ReadFiles(input)
+	files, err := extractor.ReadFiles(inputName)
 	if err != nil {
 		log.Fatalf("error while reading the files %s", err)
 	}
@@ -33,21 +32,21 @@ func main() {
 		log.Fatalf("error while extracting %s", err)
 	}
 
-	writer, err := writers.NewCsvWriter(output)
-	defer writer.Flush()
+	fileWriter, err := os.Create(outputName)
 	if err != nil {
-		log.Fatalf("error while creting output file %s", err)
+		log.Fatalf("error while creating the file")
 	}
 
+	recordWriter := writers.NewCsvWriter(fileWriter)
 	processor := extractor.NewTagProcessor(exifImagesData)
 
 	err = processor.
-		AddTagHandler("filename", processors.GetFileName).
-		AddTagHandler("latitude", processors.GetLatitude).
-		AddTagHandler("longitude", processors.GetLongitude).
-		Write(writer)
+		AddTagHandler("filename", extractor.GetFileName).
+		AddTagHandler("latitude", extractor.GetLatitude).
+		AddTagHandler("longitude", extractor.GetLongitude).
+		Write(recordWriter)
 	if err != nil {
-		log.Fatalf("error while creting output file %s", err)
+		log.Fatalf("error while creating output file %s", err)
 	}
 
 }
