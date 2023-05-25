@@ -26,5 +26,5 @@ go.work
 
 # other files
 images/
-output.csv
-output.html
+*.csv
+*.html
