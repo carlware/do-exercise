@@ -19,3 +19,12 @@ vendor/
 
 # Go workspace file
 go.work
+
+# ecludes IDE's
+.idea/
+.vscode/
+
+# other files
+images/
+output.csv
+output.html
