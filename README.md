@@ -16,6 +16,9 @@ make build
 
 # process one file
 ./exif --input images/bird.jpeg
+
+# process directory with html format
+./exif --input images --format html
 ```
 
 ## Development
