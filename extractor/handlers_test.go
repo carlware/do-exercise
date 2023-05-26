@@ -2,10 +2,11 @@ package extractor
 
 import (
 	"fmt"
+	"testing"
+
 	"github.com/dsoprea/go-exif/v3"
 	exifcommon "github.com/dsoprea/go-exif/v3/common"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestGetFileName(t *testing.T) {

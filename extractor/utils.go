@@ -2,13 +2,14 @@ package extractor
 
 import (
 	"fmt"
-	"geoextractor-go/extractor/writers"
-	"github.com/dsoprea/go-exif/v3"
-	exifcommon "github.com/dsoprea/go-exif/v3/common"
 	"io"
 	"io/ioutil"
 	"log"
 	"os"
+
+	"geoextractor-go/extractor/writers"
+	"github.com/dsoprea/go-exif/v3"
+	exifcommon "github.com/dsoprea/go-exif/v3/common"
 )
 
 func isDirectory(path string) (bool, error) {
@@ -33,7 +34,7 @@ func ReadFiles(filepath string) (map[string][]byte, error) {
 			return fileDataByName, err
 		}
 		fileDataByName[filepath] = imageBytes
-	} else  {
+	} else {
 		files, err := ioutil.ReadDir(filepath)
 		if err != nil {
 			return fileDataByName, err

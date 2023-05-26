@@ -2,9 +2,10 @@ package extractor
 
 import (
 	"bytes"
+	"testing"
+
 	"geoextractor-go/extractor/writers"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestTagProcessor_AddTagHandler(t *testing.T) {

@@ -28,7 +28,7 @@ func (w TagProcessor) Write(writer RecordWriter) error {
 		return fmt.Errorf("error while writing %w", err)
 	}
 
-	Exit:
+Exit:
 	for _, imageInfo := range w.imagesInfo {
 		record := make([]string, len(w.columns))
 		for idx, processor := range w.processorRows {
@@ -39,7 +39,7 @@ func (w TagProcessor) Write(writer RecordWriter) error {
 			}
 			record[idx] = data
 		}
-		if err := writer.Write(record); err!= nil {
+		if err := writer.Write(record); err != nil {
 			return fmt.Errorf("error while writing %w", err)
 		}
 	}

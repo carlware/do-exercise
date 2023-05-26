@@ -3,9 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
-	"geoextractor-go/extractor"
 	"log"
 	"os"
+
+	"geoextractor-go/extractor"
 )
 
 func main() {
