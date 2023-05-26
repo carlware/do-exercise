@@ -2,8 +2,10 @@ package extractor
 
 import (
 	"fmt"
+	"geoextractor-go/extractor/writers"
 	"github.com/dsoprea/go-exif/v3"
 	exifcommon "github.com/dsoprea/go-exif/v3/common"
+	"io"
 	"io/ioutil"
 	"log"
 	"os"
@@ -71,4 +73,14 @@ func ExtractExifDataFromImages(imageByName map[string][]byte) ([]FileInfo, error
 	}
 
 	return imagesInfo, nil
+}
+
+func CreateRecordWriter(format string, writer io.Writer) RecordWriter {
+	switch format {
+	case "csv":
+		return writers.NewCsvWriter(writer)
+	case "html":
+		return writers.NewHtmlWriter(writer)
+	}
+	return nil
 }

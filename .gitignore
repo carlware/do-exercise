@@ -23,6 +23,7 @@ go.work
 # ecludes IDE's
 .idea/
 .vscode/
+exif
 
 # other files
 images/

@@ -8,7 +8,14 @@
 
 ### Example
 ```shell
+# build
+make build
+
+# process images folder
 ./exif --input images
+
+# process one file
+./exif --input images/bird.jpeg
 ```
 
 ## Development
