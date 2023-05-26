@@ -59,7 +59,7 @@ func TestGetLatitude(t *testing.T) {
 	t.Run("should get the longitude", func(t *testing.T) {
 		longitude, err := GetLongitude(fileWithGPS)
 		assert.NoError(t, err)
-		assert.Equal(t, "26.586667", longitude)
+		assert.Equal(t, "-80.053611", longitude)
 	})
 
 	t.Run("should return error if file doesn't contain longitude", func(t *testing.T) {

@@ -30,5 +30,5 @@ func GetLongitude(info FileInfo) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("%f", gpsInfo.Latitude.Decimal()), nil
+	return fmt.Sprintf("%f", gpsInfo.Longitude.Decimal()), nil
 }
