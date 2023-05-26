@@ -35,3 +35,4 @@ make test
 ## TODO
 1. increase test coverage
 2. add lazy loader
+3. add unit test for html writer

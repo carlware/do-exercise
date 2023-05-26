@@ -13,7 +13,6 @@ type TagProcessor struct {
 
 func NewTagProcessor(imagesInfo []FileInfo) TagProcessor {
 	return TagProcessor{
-		columns:    []string{},
 		imagesInfo: imagesInfo,
 	}
 }

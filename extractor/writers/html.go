@@ -37,12 +37,12 @@ func (w *HtmlWriter) Write(record []string) error {
 }
 
 func (w *HtmlWriter) Flush() {
-	cols := make([]string, len(w.columns))
+	columns := make([]string, len(w.columns))
 	for idx, name := range w.columns {
-		cols[idx] = fmt.Sprintf("'%s'", name)
+		columns[idx] = fmt.Sprintf("'%s'", name)
 	}
-	columnsStr := strings.Join(cols, ",")
-	bytes, _ := json.Marshal(w.records)
-	output := fmt.Sprintf(htmlTemplate, columnsStr, bytes)
+	columnsStr := strings.Join(columns, ",")
+	payload, _ := json.Marshal(w.records)
+	output := fmt.Sprintf(htmlTemplate, columnsStr, payload)
 	w.writer.Write([]byte(output))
 }
